@@ -1,0 +1,21 @@
+#include "mbed.h"
+
+DigitalIn button(PC_13);
+Serial pc(USBTX, USBRX); // Initialize serial connection to PC
+
+int main() {
+    int pressCount = 0;
+    pc.printf("Button press counter\n");
+
+    while(true) {
+        // Assuming button is pulled-up and pressing it brings the pin to LOW
+        if(button == 0) { 
+            pressCount++;
+            pc.printf("Button has been pressed %d times\n", pressCount);
+
+            // Simple debounce
+            while(button == 0); 
+            ThisThread::sleep_for(200ms); // Wait for 200ms
+        }
+    }
+}
